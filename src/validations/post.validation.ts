@@ -2,7 +2,6 @@ import Joi from 'joi';
 
 export const create_tip_validation = Joi.object({
     type: Joi.string().valid('tip', 'campaign').required(), // Ensures the post is of type 'tip'
-    author: Joi.string().required(), // Assuming the author (username) is a string and mandatory
     title: Joi.string().max(255).required(), // Title with a max length of 255 characters
     content: Joi.string().required(), // No length limit for content
     // voteCount is omitted since it will have a default value
@@ -12,7 +11,6 @@ export const create_tip_validation = Joi.object({
 
 export const voteValidation = Joi.object({
     postId: Joi.number().integer().positive().required(),
-    userId: Joi.number().integer().positive().required(),
     direction: Joi.string().valid('up', 'down').required(),
 }).unknown(false); // Doesn't allow unknown fields
 

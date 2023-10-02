@@ -23,9 +23,10 @@ class PostController implements Controller {
     }
 
     private createPost: RequestResponseHandler = asyncWrapper(
-        async (req, res) => {
+        async (req: CustomRequest, res) => {
             const response = customResponse(res);
-            const post: Post = req.body;
+            const username = req.username;
+            const post: Post = { ...req.body, author: username };
             try {
                 const res = await postService.createPost(post);
                 response.success({ code: StatusCodes.CREATED, data: res });
@@ -35,21 +36,28 @@ class PostController implements Controller {
         },
     );
 
-    private vote: RequestResponseHandler = asyncWrapper(async (req, res) => {
-        const response = customResponse(res);
-        const vote: voteData = req.body;
-        try {
-            const res = await postService.vote(vote);
-            response.success({ code: StatusCodes.CREATED, data: res });
-        } catch (err) {
-            response.error(err as ErrorData);
-        }
-    });
+    private vote: RequestResponseHandler = asyncWrapper(
+        async (req: CustomRequest, res) => {
+            const response = customResponse(res);
+            const user_id = req.user_id;
+            const vote: voteData = { ...req.body, userId: user_id! };
+            try {
+                const res = await postService.vote(vote);
+                response.success({ code: StatusCodes.CREATED, data: res });
+            } catch (err) {
+                response.error(err as ErrorData);
+            }
+        },
+    );
 
     private fetchPosts: RequestResponseHandler = asyncWrapper(
-        async (req, res) => {
+        async (req: CustomRequest, res) => {
             const response = customResponse(res);
-            const fetchPostsData: fetchPostsData = req.body;
+            const user_id = req.user_id;
+            const fetchPostsData: fetchPostsData = {
+                ...req.body,
+                userId: user_id,
+            };
             try {
                 const res = await postService.fetchPosts(fetchPostsData);
                 response.success({ code: StatusCodes.CREATED, data: res });

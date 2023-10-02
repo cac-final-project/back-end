@@ -9,6 +9,7 @@ declare global {
         title: string;
         content: string;
         voteCount: number;
+        isVoted?: 'up' | 'down' | null;
         lat?: number; // Optional latitude
         lon?: number; // Optional longitude
     }
@@ -29,6 +30,7 @@ export class PostModel
     public title!: string;
     public content!: string;
     public voteCount!: number;
+    public isVoted?: 'up' | 'down' | null;
     public lat?: number;
     public lon?: number;
 
