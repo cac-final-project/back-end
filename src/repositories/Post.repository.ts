@@ -46,7 +46,7 @@ export const postRepository = {
                 offset: offset,
             });
 
-            const postsWithVotes = []; // This will hold the posts with the isVoted property
+            const postsWithVotesAndProfileImg = []; // This will hold the posts with the isVoted property and profile_img
 
             for (let post of posts) {
                 const userVote = await db.Vote.findOne({
@@ -56,12 +56,33 @@ export const postRepository = {
                     },
                 });
 
-                const postData = post.toJSON(); // Convert Sequelize instance to plain object
-                postData.isVoted = userVote ? userVote.direction : null; // Assign the vote direction if exists or null
-                postsWithVotes.push(postData);
+                // Fetching the profile_img based on the post's author
+                const user = await db.User.findOne({
+                    where: {
+                        username: post.author,
+                    },
+                });
+
+                let profileImg = null;
+                if (user) {
+                    const profile = await db.Profile.findOne({
+                        where: {
+                            user_id: user.id,
+                        },
+                    });
+                    if (profile) {
+                        profileImg = profile.profile_img;
+                    }
+                }
+
+                const postData = post.toJSON();
+                postData.isVoted = userVote ? userVote.direction : null;
+                postData.profile_img = profileImg; // Assign the fetched profile_img
+
+                postsWithVotesAndProfileImg.push(postData);
             }
 
-            return postsWithVotes;
+            return postsWithVotesAndProfileImg;
         } catch (err) {
             return dbException(err);
         }

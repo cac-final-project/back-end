@@ -6,6 +6,7 @@ declare global {
         id: number;
         type: 'tip' | 'campaign';
         author: string; // This will be the username from the User model
+        profile_img?: string | null;
         title: string;
         content: string;
         voteCount: number;
@@ -27,6 +28,7 @@ export class PostModel
     public id!: number;
     public type!: 'tip' | 'campaign';
     public author!: string;
+    public profile_img?: string | null;
     public title!: string;
     public content!: string;
     public voteCount!: number;
