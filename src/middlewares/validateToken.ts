@@ -34,7 +34,7 @@ const validateToken = (): RequestHandler => {
         }
         try {
             const verifiedToken = verifyToken(token!);
-            const user = await userRepository.findByUserId(
+            const user = await userRepository.findByUsername(
                 verifiedToken.username,
             );
             req.username = verifiedToken.username;

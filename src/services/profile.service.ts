@@ -8,9 +8,23 @@ export const profileService = {
     userRepository,
 
     async getProfile(profileData: getProfileInterface, username: string) {
-        const user = await this.userRepository.findByUserId(username);
+        const user = await this.userRepository.findByUsername(username);
         const profile = await this.profileRepository.getProfile(
             profileData,
+            username,
+        );
+        return {
+            ...profile,
+            first_name: user?.first_name,
+            last_name: user?.last_name,
+        };
+    },
+
+    async getAuthorProfile(profileData: getAuthorProfileInterface) {
+        const { username } = profileData;
+        const user = await this.userRepository.findByUsername(username);
+        const profile = await this.profileRepository.getProfile(
+            { userId: user?.id! },
             username,
         );
         return {

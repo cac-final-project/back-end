@@ -9,7 +9,10 @@ export {
     fetchPostsValidation,
 } from './post.validation';
 
-export { updateProfile_validation } from './profile.validation';
+export {
+    updateProfile_validation,
+    getAuthorProfile_validation,
+} from './profile.validation';
 
 export { get_emergencyData_validation } from './weather.validation';
 

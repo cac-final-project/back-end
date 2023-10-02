@@ -2,9 +2,10 @@ import {
     validateToken,
     multerErrorHandling,
     formValidation,
+    queryValidation,
 } from '@/middlewares/index';
 import {
-    // getProfile_validation,
+    getAuthorProfile_validation,
     updateProfile_validation,
 } from '@/validations/index';
 import { upload } from '@/utils/multerSetup';
@@ -12,6 +13,7 @@ import { upload } from '@/utils/multerSetup';
 export function createProfileRoutes(
     path: string,
     getProfileHandler: RequestResponseHandler,
+    getAuthorProfileHandler: RequestResponseHandler,
     updateProfileHandler: RequestResponseHandler,
 ): CustomRoutes {
     return {
@@ -20,6 +22,15 @@ export function createProfileRoutes(
             path: `${path}`,
             middleware: [validateToken()],
             handler: getProfileHandler,
+        },
+        getAuthorProfile: {
+            method: 'get',
+            path: `${path}/author`,
+            middleware: [
+                validateToken(),
+                queryValidation(getAuthorProfile_validation),
+            ],
+            handler: getAuthorProfileHandler,
         },
         updateProfile: {
             method: 'put',

@@ -1,10 +1,11 @@
-import { userRepository } from '@/repositories/index';
+import { userRepository, profileRepository } from '@/repositories/index';
 import { customErrorMsg } from '@/exceptions/index';
 import bcrypt from 'bcrypt';
 import { generateToken } from '@/utils/token';
 
 export const userService = {
     userRepository,
+    profileRepository,
 
     async create(userData: User) {
         userData.password = await bcrypt.hash(userData.password, 10);
@@ -20,7 +21,7 @@ export const userService = {
     async login(credentials: { username: string; password: string }) {
         // Fetch the user by username
         console.log(credentials);
-        const user = await userRepository.findByUserId(credentials.username);
+        const user = await userRepository.findByUsername(credentials.username);
 
         // If no user found or password doesn't match, throw an error
         if (!user || !bcrypt.compareSync(credentials.password, user.password)) {

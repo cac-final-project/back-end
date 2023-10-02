@@ -10,7 +10,7 @@ export const postService = {
     userRepository,
     voteRepository,
     async createPost(postData: Post) {
-        const user = await this.userRepository.findByUserId(postData.author);
+        const user = await this.userRepository.findByUsername(postData.author);
         if (postData.type === 'tip') {
             if (postData.lat || postData.lon) {
                 return customErrorMsg('tip cannot include either lat or lon');

@@ -5,6 +5,10 @@ declare global {
     interface getProfileInterface {
         userId: number;
     }
+
+    interface getAuthorProfileInterface {
+        username: string;
+    }
     interface profileUpdateInterface {
         user_id: number;
         profile_img?: string | null | undefined;

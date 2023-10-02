@@ -16,6 +16,7 @@ class ProfileController implements Controller {
         const customRoutes: CustomRoutes = createProfileRoutes(
             this.path,
             this.getProfile,
+            this.getAuthorProfile,
             this.updateProfile,
         );
         createRoutes(customRoutes, this.router);
@@ -30,6 +31,24 @@ class ProfileController implements Controller {
             try {
                 const res = await profileService.getProfile(profile, username!);
 
+                return response.success({
+                    code: StatusCodes.CREATED,
+                    data: res,
+                });
+            } catch (err) {
+                return response.error(err as ErrorData);
+            }
+        },
+    );
+
+    private getAuthorProfile: RequestResponseHandler = asyncWrapper(
+        async (req: CustomRequest, res) => {
+            const response = customResponse(res);
+            const profile: getAuthorProfileInterface = {
+                username: req.body.author!,
+            };
+            try {
+                const res = await profileService.getAuthorProfile(profile);
                 return response.success({
                     code: StatusCodes.CREATED,
                     data: res,

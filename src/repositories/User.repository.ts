@@ -11,7 +11,7 @@ export const userRepository = {
         }
     },
 
-    async findByUserId(username: string) {
+    async findByUsername(username: string) {
         try {
             const user = await db.User.findOne({
                 where: { username },
