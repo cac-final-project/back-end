@@ -5,6 +5,7 @@ import ProfileController from './profile.controller';
 import WeatherController from './weather.controller';
 import GeoController from './geo.controller';
 import ResourcesController from './resources.controller';
+import CommentController from './comment.controller';
 
 export const controllers = [
     new UserController(),
@@ -14,4 +15,5 @@ export const controllers = [
     new WeatherController(),
     new GeoController(),
     new ResourcesController(),
+    new CommentController(),
 ];

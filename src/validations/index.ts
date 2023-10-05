@@ -19,3 +19,8 @@ export { get_emergencyData_validation } from './weather.validation';
 export { geocoding_validation } from './geo.validation';
 
 export { findResources_validation } from './resources.validation';
+
+export {
+    create_comment_validation,
+    comment_vote_validation,
+} from './comment.validation';

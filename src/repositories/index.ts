@@ -6,3 +6,5 @@ export { profileRepository } from './Profile.repository';
 export { countyRepository } from './County.repository';
 export { postImageRepository } from './PostImage.repository';
 export { postTagsRepository } from './PostTags.repository';
+export { commentRepository } from './Comment.repository';
+export { commentsVoteRepository } from './CommentsVote.repository';
