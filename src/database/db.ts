@@ -5,6 +5,8 @@ import { PostGenerator, PostModel } from './models/post';
 import { VoteGenerator, VoteModel } from './models/vote';
 import { ProfileGenerator, ProfileModel } from './models/profile';
 import { CountyGenerator, CountyModel } from './models/county';
+import { PostImageGenerator, PostImageModel } from './models/postimage';
+import { TagGenerator, TagModel } from './models/posttags';
 
 import { relations } from './relations';
 
@@ -25,6 +27,8 @@ declare global {
         Vote: typeof VoteModel;
         Profile: typeof ProfileModel;
         County: typeof CountyModel;
+        PostImage: typeof PostImageModel;
+        PostTags: typeof TagModel;
     }
 }
 
@@ -33,6 +37,8 @@ const post = PostGenerator(sequelize, user);
 const vote = VoteGenerator(sequelize, user, post);
 const profile = ProfileGenerator(sequelize);
 const county = CountyGenerator(sequelize);
+const postimage = PostImageGenerator(sequelize, post);
+const posttags = TagGenerator(sequelize, post);
 
 const db: DB = {
     Sequelize,
@@ -42,6 +48,8 @@ const db: DB = {
     Vote: vote,
     Profile: profile,
     County: county,
+    PostImage: postimage,
+    PostTags: posttags,
 };
 
 relations(db);

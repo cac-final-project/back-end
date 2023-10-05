@@ -1,7 +1,11 @@
+import { cloudinary } from '@/apis/index';
+import fs from 'fs';
 import {
     postRepository,
     userRepository,
     voteRepository,
+    postImageRepository,
+    postTagsRepository,
 } from '@/repositories/index';
 import { customErrorMsg } from '@/exceptions/index';
 
@@ -9,13 +13,42 @@ export const postService = {
     postRepository,
     userRepository,
     voteRepository,
+    postImageRepository,
+    postTagsRepository,
+
     async createPost(postData: Post) {
-        const user = await this.userRepository.findByUsername(postData.author);
-        if (postData.type === 'tip') {
+        const { type, tags, img_url, author } = postData;
+        const user = await this.userRepository.findByUsername(author);
+        if (type === 'tip') {
             if (postData.lat || postData.lon) {
                 return customErrorMsg('tip cannot include either lat or lon');
             }
             const tip = await this.postRepository.createPost(postData);
+            if (img_url && img_url.length > 0) {
+                const imageUploadPromises: Promise<PostImage>[] = img_url.map(
+                    async (item) => {
+                        const { secure_url } = await cloudinary(item);
+                        fs.unlinkSync(item);
+                        return this.postImageRepository.createPostImage({
+                            post_id: tip.id,
+                            img_url: secure_url!,
+                        });
+                    },
+                );
+
+                await Promise.all(imageUploadPromises);
+            }
+
+            if (tags) {
+                if (tags.length !== 0) {
+                    tags.map((item) => {
+                        return this.postTagsRepository.createPostTags({
+                            post_id: tip.id,
+                            name: item,
+                        });
+                    });
+                }
+            }
             return tip;
         } else {
             if (!postData.lat || !postData.lon) {
@@ -24,6 +57,29 @@ export const postService = {
                 return customErrorMsg('only volunteers can create campaign');
             } else {
                 const campaign = await this.postRepository.createPost(postData);
+                if (img_url && img_url.length > 0) {
+                    const imageUploadPromises: Promise<PostImage>[] =
+                        img_url.map(async (item) => {
+                            const { secure_url } = await cloudinary(item);
+                            fs.unlinkSync(item);
+                            return this.postImageRepository.createPostImage({
+                                post_id: campaign.id,
+                                img_url: secure_url!,
+                            });
+                        });
+
+                    await Promise.all(imageUploadPromises);
+                }
+                if (tags) {
+                    if (tags.length !== 0) {
+                        tags.map((item) => {
+                            return this.postTagsRepository.createPostTags({
+                                post_id: campaign.id,
+                                name: item,
+                            });
+                        });
+                    }
+                }
                 return campaign;
             }
         }

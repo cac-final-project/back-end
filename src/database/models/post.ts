@@ -7,12 +7,14 @@ declare global {
         type: 'tip' | 'campaign';
         author: string; // This will be the username from the User model
         profile_img?: string | null;
+        img_url?: string[] | [];
         title: string;
         content: string;
         voteCount: number;
         isVoted?: 'up' | 'down' | null;
         lat?: number; // Optional latitude
         lon?: number; // Optional longitude
+        tags?: string[];
     }
 
     type PostCreateInterface = Omit<

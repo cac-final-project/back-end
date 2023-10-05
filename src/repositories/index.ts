@@ -4,3 +4,5 @@ export { postRepository } from './Post.repository';
 export { voteRepository } from './Vote.repository';
 export { profileRepository } from './Profile.repository';
 export { countyRepository } from './County.repository';
+export { postImageRepository } from './PostImage.repository';
+export { postTagsRepository } from './PostTags.repository';

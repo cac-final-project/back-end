@@ -2,12 +2,15 @@ import {
     payloadValidation,
     validateToken,
     queryValidation,
+    multerErrorHandling,
+    multiFileFormValidation,
 } from '@/middlewares/index';
 import {
-    create_tip_validation,
+    create_post_validation,
     voteValidation,
     fetchPostsValidation,
 } from '@/validations/index';
+import { upload } from '@/utils/multerSetup';
 
 export function createPostRoutes(
     path: string,
@@ -20,8 +23,10 @@ export function createPostRoutes(
             method: 'post',
             path: `${path}`,
             middleware: [
+                upload.array('files', 2), // assuming max 10 files
+                multerErrorHandling,
                 validateToken(),
-                payloadValidation(create_tip_validation),
+                multiFileFormValidation(create_post_validation),
             ],
             handler: createTipHandler,
         },

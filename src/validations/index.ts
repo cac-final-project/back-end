@@ -4,7 +4,7 @@ export {
 } from './user.validation';
 
 export {
-    create_tip_validation,
+    create_post_validation,
     voteValidation,
     fetchPostsValidation,
 } from './post.validation';

@@ -27,6 +27,7 @@ class PostController implements Controller {
             const response = customResponse(res);
             const username = req.username;
             const post: Post = { ...req.body, author: username };
+            console.log(post);
             try {
                 const res = await postService.createPost(post);
                 response.success({ code: StatusCodes.CREATED, data: res });
