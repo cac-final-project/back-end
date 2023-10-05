@@ -38,7 +38,7 @@ export class PostModel
     public isVoted?: 'up' | 'down' | null;
     public lat?: number;
     public lon?: number;
-    public address?: string;
+    public addressName?: string;
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;

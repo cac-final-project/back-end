@@ -9,6 +9,7 @@ import {
     create_post_validation,
     voteValidation,
     fetchPostsValidation,
+    fetch_post_validation,
 } from '@/validations/index';
 import { upload } from '@/utils/multerSetup';
 
@@ -17,6 +18,7 @@ export function createPostRoutes(
     createTipHandler: RequestResponseHandler,
     voteHandler: RequestResponseHandler,
     fetchPostsHandler: RequestResponseHandler,
+    fetchPostHandler: RequestResponseHandler,
 ): CustomRoutes {
     return {
         createPost: {
@@ -44,6 +46,16 @@ export function createPostRoutes(
                 queryValidation(fetchPostsValidation),
             ],
             handler: fetchPostsHandler,
+        },
+
+        fetchPost: {
+            method: 'get',
+            path: `${path}/single`,
+            middleware: [
+                validateToken(),
+                queryValidation(fetch_post_validation),
+            ],
+            handler: fetchPostHandler,
         },
     };
 }

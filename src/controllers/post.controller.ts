@@ -18,6 +18,7 @@ class PostController implements Controller {
             this.createPost,
             this.vote,
             this.fetchPosts,
+            this.fetchPost,
         );
         createRoutes(customRoutes, this.router);
     }
@@ -61,6 +62,23 @@ class PostController implements Controller {
             };
             try {
                 const res = await postService.fetchPosts(fetchPostsData);
+                response.success({ code: StatusCodes.CREATED, data: res });
+            } catch (err) {
+                response.error(err as ErrorData);
+            }
+        },
+    );
+
+    private fetchPost: RequestResponseHandler = asyncWrapper(
+        async (req: CustomRequest, res) => {
+            const response = customResponse(res);
+            const user_id = req.user_id;
+            const fetchPostsData: fetchPostData = {
+                ...req.body,
+                post_id: req.body.postId,
+            };
+            try {
+                const res = await postService.fetchPost(fetchPostsData);
                 response.success({ code: StatusCodes.CREATED, data: res });
             } catch (err) {
                 response.error(err as ErrorData);

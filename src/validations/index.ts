@@ -7,6 +7,7 @@ export {
     create_post_validation,
     voteValidation,
     fetchPostsValidation,
+    fetch_post_validation,
 } from './post.validation';
 
 export {

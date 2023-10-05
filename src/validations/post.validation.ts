@@ -20,3 +20,7 @@ export const create_post_validation = Joi.object({
     lon: Joi.number().optional(),
     addressName: Joi.string().optional(),
 });
+
+export const fetch_post_validation = Joi.object({
+    postId: Joi.number().integer().positive().required(),
+});

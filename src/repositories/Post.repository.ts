@@ -1,5 +1,5 @@
 import { db } from '@/database/index';
-import { dbException } from '@/exceptions/index';
+import { dbException, customErrorMsg } from '@/exceptions/index';
 import { WhereOptions } from 'sequelize';
 
 declare global {
@@ -10,6 +10,9 @@ declare global {
         limit?: number;
         userId: number;
     }
+    interface fetchPostData {
+        post_id: number;
+    }
 }
 
 type WhereClause = WhereOptions;
@@ -19,6 +22,21 @@ export const postRepository = {
         try {
             const tip = await db.Post.create(postData);
             return tip;
+        } catch (err) {
+            return dbException(err);
+        }
+    },
+
+    async fetchPost(postData: fetchPostData) {
+        const { post_id } = postData;
+        try {
+            const post = await db.Post.findByPk(post_id);
+
+            if (!post) {
+                return customErrorMsg('no post found!');
+            }
+
+            return post;
         } catch (err) {
             return dbException(err);
         }

@@ -11,7 +11,8 @@ export const commentRepository = {
         }
     },
 
-    async findByPostId(post_id: number) {
+    async findByPostId(fetchPostData: fetchPostData) {
+        const { post_id } = fetchPostData;
         try {
             const comments = await db.Comments.findAll({
                 where: { post_id },

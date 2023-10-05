@@ -6,6 +6,7 @@ import {
     voteRepository,
     postImageRepository,
     postTagsRepository,
+    commentRepository,
 } from '@/repositories/index';
 import { customErrorMsg } from '@/exceptions/index';
 
@@ -15,6 +16,7 @@ export const postService = {
     voteRepository,
     postImageRepository,
     postTagsRepository,
+    commentRepository,
 
     async createPost(postData: Post) {
         const { type, tags, img_url, author } = postData;
@@ -93,5 +95,27 @@ export const postService = {
 
     async fetchPosts(fetchPostsData: fetchPostsData): Promise<Post[]> {
         return this.postRepository.fetchPosts(fetchPostsData);
+    },
+
+    async fetchPost(fetchPostData: fetchPostData) {
+        const post = await this.postRepository.fetchPost(fetchPostData);
+
+        const images = await this.postImageRepository.fetchImagesByPostId(
+            fetchPostData,
+        );
+
+        const imageUrls = images.map((img) => img.dataValues.img_url);
+
+        console.log(imageUrls);
+
+        const comments = await this.commentRepository.findByPostId(
+            fetchPostData,
+        );
+
+        const commentContents = comments.map((comment) => comment.dataValues);
+
+        console.log(commentContents);
+
+        return { ...post.dataValues, comments: commentContents, imageUrls };
     },
 };
