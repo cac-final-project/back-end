@@ -15,6 +15,7 @@ declare global {
         lat?: number; // Optional latitude
         lon?: number; // Optional longitude
         tags?: string[];
+        addressName?: string;
     }
 
     type PostCreateInterface = Omit<
@@ -37,6 +38,7 @@ export class PostModel
     public isVoted?: 'up' | 'down' | null;
     public lat?: number;
     public lon?: number;
+    public address?: string;
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -85,6 +87,10 @@ export const PostGenerator = (
             lon: {
                 type: DataTypes.FLOAT,
                 allowNull: true, // Making it optional
+            },
+            addressName: {
+                type: DataTypes.STRING(255), // Limiting the length to 255 characters
+                allowNull: true,
             },
         },
         {

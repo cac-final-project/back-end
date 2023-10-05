@@ -13,10 +13,10 @@ export const fetchPostsValidation = Joi.object({
 });
 
 export const create_post_validation = Joi.object({
-    type: Joi.string().valid('tip', 'campaign').required(), // Ensures the post is of type 'tip'
-    title: Joi.string().max(255).required(), // Title with a max length of 255 characters
-    content: Joi.string().required(), // No length limit for content
-    // voteCount is omitted since it will have a default value
-    lat: Joi.number().optional(), // Optional latitude
-    lon: Joi.number().optional(), // Optional longitude
+    type: Joi.string().valid('tip', 'campaign').required(),
+    title: Joi.string().max(255).required(),
+    content: Joi.string().required(),
+    lat: Joi.number().optional(),
+    lon: Joi.number().optional(),
+    addressName: Joi.string().optional(),
 });

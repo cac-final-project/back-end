@@ -21,8 +21,10 @@ const geolocation = async (geoData: geoData): Promise<string> => {
 
         // Check if the neighborhood exists in the address, if not, return the city
         // If the city doesn't exist, return the county
+        console.log(response.data);
         const address = response.data.address;
-        return address.neighbourhood || address.city || address.county;
+        // return address.neighbourhood || address.city || address.county;
+        return address;
     } catch (error) {
         throw customErrorMsg('reverse geocoding error');
     }
