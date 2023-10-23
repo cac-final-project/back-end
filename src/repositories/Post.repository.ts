@@ -12,6 +12,7 @@ declare global {
     }
     interface fetchPostData {
         post_id: number;
+        userId: number;
     }
 }
 
@@ -36,12 +37,42 @@ export const postRepository = {
                 return customErrorMsg('no post found!');
             }
 
-            return post;
+            // Check if the user has voted for this post
+            const userVote = await db.Vote.findOne({
+                where: {
+                    userId: postData.userId, // Assuming you have the userId in postData
+                    postId: post_id,
+                },
+            });
+
+            // Fetch the profile_img based on the post's author
+            const user = await db.User.findOne({
+                where: {
+                    username: post.author,
+                },
+            });
+
+            let profileImg = null;
+            if (user) {
+                const profile = await db.Profile.findOne({
+                    where: {
+                        user_id: user.id,
+                    },
+                });
+                if (profile) {
+                    profileImg = profile.profile_img;
+                }
+            }
+
+            const postDataToReturn = post.toJSON();
+            postDataToReturn.isVoted = userVote ? userVote.direction : null;
+            postDataToReturn.profile_img = profileImg;
+
+            return postDataToReturn;
         } catch (err) {
             return dbException(err);
         }
     },
-
     async fetchPosts(fetchData: fetchPostsData): Promise<Post[]> {
         try {
             const { author, type, page = 1, limit = 10, userId } = fetchData;

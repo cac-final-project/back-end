@@ -3,12 +3,11 @@ import { Sequelize, DataTypes, Model } from 'sequelize';
 declare global {
     interface User extends TimeStampModel {
         id: number;
-        username: string;
-        first_name: string;
-        last_name: string;
+        username: string; // login userId
+        nickname: string;
         password: string;
         phone_no: string;
-        type: 'user' | 'volunteer';
+        type: 'neighbor' | 'volunteer';
     }
 
     type UserCreateInterface = Omit<
@@ -25,11 +24,10 @@ export class UserModel
 {
     public id!: number;
     public username!: string;
-    public first_name!: string;
-    public last_name!: string;
+    public nickname!: string;
     public password!: string;
     public phone_no!: string;
-    public type!: 'user' | 'volunteer';
+    public type!: 'neighbor' | 'volunteer';
 
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -48,13 +46,10 @@ export const UserGenerator = (sequelize: Sequelize): typeof UserModel => {
                 allowNull: false,
                 unique: true,
             },
-            first_name: {
+            nickname: {
                 type: DataTypes.STRING,
                 allowNull: false,
-            },
-            last_name: {
-                type: DataTypes.STRING,
-                allowNull: false,
+                unique: false,
             },
             password: {
                 type: DataTypes.STRING,
@@ -67,7 +62,7 @@ export const UserGenerator = (sequelize: Sequelize): typeof UserModel => {
             },
             type: {
                 // Added type property to the schema
-                type: DataTypes.ENUM('user', 'volunteer'),
+                type: DataTypes.ENUM('neighbor', 'volunteer'),
                 allowNull: false,
             },
         },

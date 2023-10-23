@@ -76,6 +76,7 @@ class PostController implements Controller {
             const fetchPostsData: fetchPostData = {
                 ...req.body,
                 post_id: req.body.postId,
+                userId: user_id,
             };
             try {
                 const res = await postService.fetchPost(fetchPostsData);

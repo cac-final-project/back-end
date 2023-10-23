@@ -55,7 +55,7 @@ export const postService = {
         } else {
             if (!postData.lat || !postData.lon) {
                 return customErrorMsg('lat or lon is missing');
-            } else if (user?.type === 'user') {
+            } else if (user?.type === 'neighbor') {
                 return customErrorMsg('only volunteers can create campaign');
             } else {
                 const campaign = await this.postRepository.createPost(postData);
@@ -108,6 +108,12 @@ export const postService = {
 
         console.log(imageUrls);
 
+        const tags = await this.postTagsRepository.fetchTagsByPost(
+            fetchPostData,
+        );
+
+        const tagItems = tags.map((item) => item.name);
+
         const comments = await this.commentRepository.findByPostId(
             fetchPostData,
         );
@@ -116,6 +122,6 @@ export const postService = {
 
         console.log(commentContents);
 
-        return { ...post.dataValues, comments: commentContents, imageUrls };
+        return { ...post, comments: commentContents, imageUrls, tagItems };
     },
 };

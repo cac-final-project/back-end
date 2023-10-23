@@ -23,6 +23,7 @@ const TAG_CONFIG = {
     ignore: [
         'colour',
         'material',
+
         'seats',
         'toilets:disposal',
         'operator',
@@ -197,8 +198,8 @@ async function fetchResources(resourceData: {
                     allTags.add(key);
                 }
             }
-            item.address = 'asdfsadf';
-            // item.address = await getAddressFromLatLon(item.lat, item.lon);
+            // item.address = 'asdfsadf';
+            item.address = await getAddressFromLatLon(item.lat, item.lon);
         }
 
         refinedData = refinedData.map((item: AmenityItem) => ({

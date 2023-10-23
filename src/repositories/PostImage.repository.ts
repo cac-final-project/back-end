@@ -1,5 +1,5 @@
 import { db } from '@/database/index';
-import { dbException } from '@/exceptions/index';
+import { dbException, customErrorMsg } from '@/exceptions/index';
 
 export const postImageRepository = {
     async createPostImage(postImageData: PostImageCreateInterface) {
@@ -21,7 +21,7 @@ export const postImageRepository = {
             });
 
             if (images.length === 0) {
-                throw new Error('No images found for the given post ID'); // Or return an empty array if you prefer
+                return customErrorMsg('No images found for the given post ID');
             }
 
             return images;

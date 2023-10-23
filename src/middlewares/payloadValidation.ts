@@ -19,6 +19,7 @@ const payloadValidation = (schema: Joi.Schema): RequestHandler => {
             e.details.forEach((error: Joi.ValidationErrorItem) => {
                 errors.push(error.message);
             });
+            console.log(errors);
             response.error({
                 code: StatusCodes.UNPROCESSABLE_ENTITY,
                 message: errors.join(', '),
