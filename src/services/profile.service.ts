@@ -34,6 +34,7 @@ export const profileService = {
         // if there is profile_img
         if ('profile_img' in profileData) {
             const { secure_url } = await cloudinary(profileData.profile_img);
+            console.log(secure_url);
             fs.unlinkSync(profileData.profile_img!);
             const updatedProfileData = {
                 ...profileData,

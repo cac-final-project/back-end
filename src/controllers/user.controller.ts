@@ -23,6 +23,8 @@ class UserController implements Controller {
             this.create,
             this.login,
             this.validateToken,
+            this.checkUsername,
+            this.sendSms,
         );
         createRoutes(customRoutes, this.router);
     }
@@ -57,6 +59,30 @@ class UserController implements Controller {
             }
         },
     );
+    private checkUsername: RequestResponseHandler = asyncWrapper(
+        async (req, res) => {
+            const response = customResponse(res);
+            const payload = req.body;
+            try {
+                const res = await userService.checkUsername(payload?.username!);
+                response.success({ code: StatusCodes.OK, data: res });
+            } catch (err) {
+                response.error(err as ErrorData);
+            }
+        },
+    );
+
+    private sendSms: RequestResponseHandler = asyncWrapper(async (req, res) => {
+        const response = customResponse(res);
+        const payload = req.body;
+        console.log(payload);
+        try {
+            const res = await userService.sendSms(payload);
+            response.success({ code: StatusCodes.OK, data: res });
+        } catch (err) {
+            response.error(err as ErrorData);
+        }
+    });
 }
 
 export default UserController;

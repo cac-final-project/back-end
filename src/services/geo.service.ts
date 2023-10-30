@@ -14,6 +14,6 @@ export const geoService = {
 
     async geolocation(geoData: geoData) {
         return await geolocation(geoData);
-        return await googleGeoLocation(geoData);
+        // return await googleGeoLocation(geoData);
     },
 };

@@ -79,13 +79,7 @@ async function fetchResources(resourceData: {
     const north = lat + offset;
     const east = lon + offset;
 
-    const amenities = [
-        'drinking_water',
-        'toilets',
-        'shower',
-        'waste_disposal',
-        'bench',
-    ];
+    const amenities = ['drinking_water', 'toilets', 'shower', 'bench'];
     const queries = amenities
         .map(
             (amenity) => `
@@ -198,8 +192,8 @@ async function fetchResources(resourceData: {
                     allTags.add(key);
                 }
             }
-            // item.address = 'asdfsadf';
-            item.address = await getAddressFromLatLon(item.lat, item.lon);
+            item.address = 'asdfsadf';
+            // item.address = await getAddressFromLatLon(item.lat, item.lon);
         }
 
         refinedData = refinedData.map((item: AmenityItem) => ({

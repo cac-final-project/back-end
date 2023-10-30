@@ -28,6 +28,7 @@ const formValidation = (schema: Joi.Schema): RequestHandler => {
         }
 
         const req_data: { [key: string]: any } = { ...req.body };
+        console.log(req.file);
 
         // null 로 주나, undefined 이거나 multer는 무조건 undefined을 반환...
         // if undefined => db profile_img 건들지 말기
@@ -39,6 +40,8 @@ const formValidation = (schema: Joi.Schema): RequestHandler => {
             // If file key exists and it's an empty string, delete it
             delete req_data.profile_img;
         }
+
+        console.log(req_data);
 
         const parsedBody: { [key: string]: any } = {};
 

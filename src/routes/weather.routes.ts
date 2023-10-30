@@ -13,7 +13,7 @@ export function createWeatherRoutes(
             method: 'get',
             path: `${path}`,
             middleware: [
-                validateToken(),
+                // validateToken(),
                 queryValidation(get_emergencyData_validation),
             ],
             handler: getEmergencyDataHandler,

@@ -1,6 +1,8 @@
 export {
     create_user_validation,
     login_user_validation,
+    username_dup_validation,
+    send_sms_validation,
 } from './user.validation';
 
 export {
