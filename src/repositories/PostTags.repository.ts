@@ -10,6 +10,15 @@ export const postTagsRepository = {
             return dbException(err);
         }
     },
+    async deletePostTags(post_id: number) {
+        try {
+            await db.PostTags.destroy({
+                where: { post_id: post_id },
+            });
+        } catch (err) {
+            return dbException(err);
+        }
+    },
     async fetchTagsByPost(fetchPostData: fetchPostData) {
         const { post_id } = fetchPostData;
         try {
@@ -21,9 +30,24 @@ export const postTagsRepository = {
                 return customErrorMsg('No images found for the given post ID');
             }
 
-            // Assuming each row in PostTags has a 'tag' field.
-            // Extract only the tag values into an array.
             return tags;
+        } catch (err) {
+            return dbException(err);
+        }
+    },
+    async fetchAllTags() {
+        try {
+            const tags = await db.PostTags.findAll();
+
+            if (tags.length === 0) {
+                return [];
+            }
+
+            // Create a Set from the mapped tag names to ensure uniqueness
+            const uniqueTagNames = new Set(tags.map((tag) => tag.name));
+
+            // Convert the Set back into an array
+            return Array.from(uniqueTagNames);
         } catch (err) {
             return dbException(err);
         }

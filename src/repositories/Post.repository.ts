@@ -8,7 +8,7 @@ declare global {
         type?: 'tip' | 'campaign';
         page?: number;
         limit?: number;
-        userId: number;
+        userId?: number;
     }
     interface fetchPostData {
         post_id: number;
@@ -23,6 +23,22 @@ export const postRepository = {
         try {
             const tip = await db.Post.create(postData);
             return tip;
+        } catch (err) {
+            return dbException(err);
+        }
+    },
+
+    async findPostbyPk(postData: fetchPostData) {
+        const { post_id } = postData;
+        const post = await db.Post.findByPk(post_id);
+        return post;
+    },
+
+    async deletePost(post_id: number) {
+        try {
+            await db.Post.destroy({
+                where: { id: post_id },
+            });
         } catch (err) {
             return dbException(err);
         }
@@ -76,7 +92,6 @@ export const postRepository = {
     async fetchPosts(fetchData: fetchPostsData): Promise<Post[]> {
         try {
             const { author, type, page = 1, limit = 10, userId } = fetchData;
-            console.log(author);
             const offset = (page - 1) * limit;
 
             const whereClause: WhereClause = {};
@@ -98,12 +113,15 @@ export const postRepository = {
             const postsWithVotesAndProfileImg = []; // This will hold the posts with the isVoted property and profile_img
 
             for (let post of posts) {
-                const userVote = await db.Vote.findOne({
-                    where: {
-                        userId: userId,
-                        postId: post.id,
-                    },
-                });
+                let userVote = null;
+                if (userId) {
+                    userVote = await db.Vote.findOne({
+                        where: {
+                            userId: userId,
+                            postId: post.id,
+                        },
+                    });
+                }
 
                 // Fetching the profile_img based on the post's author
                 const user = await db.User.findOne({

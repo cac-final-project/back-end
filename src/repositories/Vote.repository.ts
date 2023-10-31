@@ -50,4 +50,13 @@ export const voteRepository = {
             return dbException(err);
         }
     },
+    async deleteVote(post_id: number) {
+        try {
+            await db.Vote.destroy({
+                where: { postId: post_id },
+            });
+        } catch (err) {
+            return dbException(err);
+        }
+    },
 };

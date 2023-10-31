@@ -11,6 +11,16 @@ export const postImageRepository = {
         }
     },
 
+    async deletePostImage(post_id: number) {
+        try {
+            await db.PostImage.destroy({
+                where: { post_id: post_id },
+            });
+        } catch (err) {
+            return dbException(err);
+        }
+    },
+
     async fetchImagesByPostId(postData: fetchPostData) {
         const { post_id } = postData;
         try {

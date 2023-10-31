@@ -19,6 +19,8 @@ class PostController implements Controller {
             this.vote,
             this.fetchPosts,
             this.fetchPost,
+            this.fetchTags,
+            this.deletePost,
         );
         createRoutes(customRoutes, this.router);
     }
@@ -55,10 +57,9 @@ class PostController implements Controller {
     private fetchPosts: RequestResponseHandler = asyncWrapper(
         async (req: CustomRequest, res) => {
             const response = customResponse(res);
-            const user_id = req.user_id;
+
             const fetchPostsData: fetchPostsData = {
                 ...req.body,
-                userId: user_id,
             };
             try {
                 const res = await postService.fetchPosts(fetchPostsData);
@@ -80,6 +81,36 @@ class PostController implements Controller {
             };
             try {
                 const res = await postService.fetchPost(fetchPostsData);
+                response.success({ code: StatusCodes.CREATED, data: res });
+            } catch (err) {
+                response.error(err as ErrorData);
+            }
+        },
+    );
+
+    private fetchTags: RequestResponseHandler = asyncWrapper(
+        async (req: CustomRequest, res) => {
+            const response = customResponse(res);
+            try {
+                const res = await postService.fetchTags();
+                response.success({ code: StatusCodes.CREATED, data: res });
+            } catch (err) {
+                response.error(err as ErrorData);
+            }
+        },
+    );
+
+    private deletePost: RequestResponseHandler = asyncWrapper(
+        async (req: CustomRequest, res) => {
+            const response = customResponse(res);
+            const user_id = req.user_id;
+            const fetchPostsData: fetchPostData = {
+                ...req.body,
+                post_id: req.body.postId,
+                userId: user_id,
+            };
+            try {
+                const res = await postService.deletePost(fetchPostsData);
                 response.success({ code: StatusCodes.CREATED, data: res });
             } catch (err) {
                 response.error(err as ErrorData);

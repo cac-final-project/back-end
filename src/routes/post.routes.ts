@@ -19,6 +19,8 @@ export function createPostRoutes(
     voteHandler: RequestResponseHandler,
     fetchPostsHandler: RequestResponseHandler,
     fetchPostHandler: RequestResponseHandler,
+    fetchTagsHandler: RequestResponseHandler,
+    deletePostHandler: RequestResponseHandler,
 ): CustomRoutes {
     return {
         createPost: {
@@ -41,10 +43,7 @@ export function createPostRoutes(
         fetchPosts: {
             method: 'get',
             path: `${path}`,
-            middleware: [
-                validateToken(),
-                queryValidation(fetchPostsValidation),
-            ],
+            middleware: [queryValidation(fetchPostsValidation)],
             handler: fetchPostsHandler,
         },
 
@@ -56,6 +55,21 @@ export function createPostRoutes(
                 queryValidation(fetch_post_validation),
             ],
             handler: fetchPostHandler,
+        },
+        fetchTags: {
+            method: 'get',
+            path: `${path}/tags`,
+            middleware: [],
+            handler: fetchTagsHandler,
+        },
+        deletePost: {
+            method: 'delete',
+            path: `${path}`,
+            middleware: [
+                validateToken(),
+                queryValidation(fetch_post_validation),
+            ],
+            handler: deletePostHandler,
         },
     };
 }

@@ -9,6 +9,7 @@ import {
     commentRepository,
 } from '@/repositories/index';
 import { customErrorMsg } from '@/exceptions/index';
+import { db } from '../database';
 
 export const postService = {
     postRepository,
@@ -123,5 +124,27 @@ export const postService = {
         console.log(commentContents);
 
         return { ...post, comments: commentContents, imageUrls, tagItems };
+    },
+
+    async fetchTags() {
+        const tags = await this.postTagsRepository.fetchAllTags();
+        return tags;
+    },
+
+    async deletePost(fetchPostData: fetchPostData) {
+        console.log(fetchPostData);
+        const { post_id } = fetchPostData;
+        const post = await this.postRepository.findPostbyPk(fetchPostData);
+
+        if (post) {
+            await this.voteRepository.deleteVote(post_id);
+            await this.postImageRepository.deletePostImage(post_id);
+            await this.postTagsRepository.deletePostTags(post_id);
+            await this.commentRepository.deleteComment(post_id);
+            await this.postRepository.deletePost(post_id);
+            return true;
+        } else {
+            return false;
+        }
     },
 };

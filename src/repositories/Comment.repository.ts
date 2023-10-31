@@ -10,6 +10,15 @@ export const commentRepository = {
             return dbException(err);
         }
     },
+    async deleteComment(post_id: number) {
+        try {
+            await db.Comments.destroy({
+                where: { post_id: post_id },
+            });
+        } catch (err) {
+            return dbException(err);
+        }
+    },
 
     async findByPostId(fetchPostData: fetchPostData) {
         const { post_id } = fetchPostData;

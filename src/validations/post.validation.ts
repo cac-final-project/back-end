@@ -24,3 +24,7 @@ export const create_post_validation = Joi.object({
 export const fetch_post_validation = Joi.object({
     postId: Joi.number().integer().positive().required(),
 });
+
+export const delete_post_validation = Joi.object({
+    postId: Joi.number().integer().positive().required(),
+});
