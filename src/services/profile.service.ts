@@ -1,4 +1,8 @@
-import { profileRepository, userRepository } from '@/repositories/index';
+import {
+    profileRepository,
+    userRepository,
+    postRepository,
+} from '@/repositories/index';
 import { customErrorMsg } from '@/exceptions/index';
 import { cloudinary } from '@/apis/index';
 import fs from 'fs';
@@ -6,15 +10,21 @@ import fs from 'fs';
 export const profileService = {
     profileRepository,
     userRepository,
+    postRepository,
 
     async getProfile(profileData: getProfileInterface, username: string) {
-        const user = await this.userRepository.findByUsername(username);
+        // const user = await this.userRepository.findByUsername(username);
         const profile = await this.profileRepository.getProfile(
             profileData,
             username,
         );
+        const posts = await this.postRepository.fetchPosts({
+            author: username,
+            userId: profileData.userId,
+        });
         return {
             ...profile,
+            posts: posts,
         };
     },
 
