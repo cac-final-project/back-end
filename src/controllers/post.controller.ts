@@ -45,6 +45,7 @@ class PostController implements Controller {
             const response = customResponse(res);
             const user_id = req.user_id;
             const vote: voteData = { ...req.body, userId: user_id! };
+            console.log(vote);
             try {
                 const res = await postService.vote(vote);
                 response.success({ code: StatusCodes.CREATED, data: res });
@@ -57,9 +58,10 @@ class PostController implements Controller {
     private fetchPosts: RequestResponseHandler = asyncWrapper(
         async (req: CustomRequest, res) => {
             const response = customResponse(res);
-
+            const user_id = req.user_id;
             const fetchPostsData: fetchPostsData = {
                 ...req.body,
+                userId: user_id,
             };
             try {
                 const res = await postService.fetchPosts(fetchPostsData);
