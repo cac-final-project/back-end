@@ -5,3 +5,4 @@ export { default as formValidation } from './formValidation';
 export { default as validateToken } from './validateToken';
 export { default as queryValidation } from './queryValidation';
 export { default as multiFileFormValidation } from './multiFileFormValidation';
+export { default as checkToken } from './checkToken';

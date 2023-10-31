@@ -100,14 +100,11 @@ export const postService = {
 
     async fetchPost(fetchPostData: fetchPostData) {
         const post = await this.postRepository.fetchPost(fetchPostData);
-
         const images = await this.postImageRepository.fetchImagesByPostId(
             fetchPostData,
         );
 
         const imageUrls = images.map((img) => img.dataValues.img_url);
-
-        console.log(imageUrls);
 
         const tags = await this.postTagsRepository.fetchTagsByPost(
             fetchPostData,
@@ -121,14 +118,16 @@ export const postService = {
 
         const commentContents = comments.map((comment) => comment.dataValues);
 
-        console.log(commentContents);
-
         return { ...post, comments: commentContents, imageUrls, tagItems };
     },
 
     async fetchTags() {
         const tags = await this.postTagsRepository.fetchAllTags();
         return tags;
+    },
+
+    async editPost() {
+        return;
     },
 
     async deletePost(fetchPostData: fetchPostData) {

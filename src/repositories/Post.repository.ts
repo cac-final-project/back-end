@@ -12,7 +12,7 @@ declare global {
     }
     interface fetchPostData {
         post_id: number;
-        userId: number;
+        userId?: number;
     }
 }
 
@@ -45,7 +45,7 @@ export const postRepository = {
     },
 
     async fetchPost(postData: fetchPostData) {
-        const { post_id } = postData;
+        const { post_id, userId } = postData; // Include userId in the destructuring
         try {
             const post = await db.Post.findByPk(post_id);
 
@@ -53,13 +53,16 @@ export const postRepository = {
                 return customErrorMsg('no post found!');
             }
 
-            // Check if the user has voted for this post
-            const userVote = await db.Vote.findOne({
-                where: {
-                    userId: postData.userId, // Assuming you have the userId in postData
-                    postId: post_id,
-                },
-            });
+            let userVote = null;
+            // Check if the user has voted for this post only if userId is provided
+            if (userId) {
+                userVote = await db.Vote.findOne({
+                    where: {
+                        userId: userId,
+                        postId: post_id,
+                    },
+                });
+            }
 
             // Fetch the profile_img based on the post's author
             const user = await db.User.findOne({

@@ -30,9 +30,9 @@ export const postImageRepository = {
                 },
             });
 
-            if (images.length === 0) {
-                return customErrorMsg('No images found for the given post ID');
-            }
+            // if (images.length === 0) {
+            //     return customErrorMsg('No images found for the given post ID');
+            // }
 
             return images;
         } catch (err) {

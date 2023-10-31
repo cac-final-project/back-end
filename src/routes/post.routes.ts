@@ -4,6 +4,7 @@ import {
     queryValidation,
     multerErrorHandling,
     multiFileFormValidation,
+    checkToken,
 } from '@/middlewares/index';
 import {
     create_post_validation,
@@ -43,17 +44,14 @@ export function createPostRoutes(
         fetchPosts: {
             method: 'get',
             path: `${path}`,
-            middleware: [queryValidation(fetchPostsValidation)],
+            middleware: [checkToken(), queryValidation(fetchPostsValidation)],
             handler: fetchPostsHandler,
         },
 
         fetchPost: {
             method: 'get',
             path: `${path}/single`,
-            middleware: [
-                validateToken(),
-                queryValidation(fetch_post_validation),
-            ],
+            middleware: [checkToken(), queryValidation(fetch_post_validation)],
             handler: fetchPostHandler,
         },
         fetchTags: {

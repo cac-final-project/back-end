@@ -26,9 +26,9 @@ export const postTagsRepository = {
                 where: { post_id: post_id },
             });
 
-            if (tags.length === 0) {
-                return customErrorMsg('No images found for the given post ID');
-            }
+            // if (tags.length === 0) {
+            //     return customErrorMsg('No images found for the given post ID');
+            // }
 
             return tags;
         } catch (err) {

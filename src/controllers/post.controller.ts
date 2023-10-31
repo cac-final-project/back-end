@@ -74,6 +74,7 @@ class PostController implements Controller {
         async (req: CustomRequest, res) => {
             const response = customResponse(res);
             const user_id = req.user_id;
+            console.log(user_id);
             const fetchPostsData: fetchPostData = {
                 ...req.body,
                 post_id: req.body.postId,
@@ -112,6 +113,19 @@ class PostController implements Controller {
             try {
                 const res = await postService.deletePost(fetchPostsData);
                 response.success({ code: StatusCodes.CREATED, data: res });
+            } catch (err) {
+                response.error(err as ErrorData);
+            }
+        },
+    );
+
+    private editPost: RequestResponseHandler = asyncWrapper(
+        async (req: CustomRequest, res) => {
+            const response = customResponse(res);
+            const user_id = req.user_id;
+
+            try {
+                response.success({ code: StatusCodes.CREATED });
             } catch (err) {
                 response.error(err as ErrorData);
             }
