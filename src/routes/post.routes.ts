@@ -11,6 +11,7 @@ import {
     voteValidation,
     fetchPostsValidation,
     fetch_post_validation,
+    update_post_validation,
 } from '@/validations/index';
 import { upload } from '@/utils/multerSetup';
 
@@ -22,6 +23,7 @@ export function createPostRoutes(
     fetchPostHandler: RequestResponseHandler,
     fetchTagsHandler: RequestResponseHandler,
     deletePostHandler: RequestResponseHandler,
+    editPostHandler: RequestResponseHandler,
 ): CustomRoutes {
     return {
         createPost: {
@@ -68,6 +70,17 @@ export function createPostRoutes(
                 queryValidation(fetch_post_validation),
             ],
             handler: deletePostHandler,
+        },
+        editPost: {
+            method: 'put',
+            path: `${path}`,
+            middleware: [
+                upload.array('files', 2), // assuming max 10 files
+                multerErrorHandling,
+                validateToken(),
+                multiFileFormValidation(update_post_validation),
+            ],
+            handler: editPostHandler,
         },
     };
 }

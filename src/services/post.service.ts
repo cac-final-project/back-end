@@ -126,10 +126,6 @@ export const postService = {
         return tags;
     },
 
-    async editPost() {
-        return;
-    },
-
     async deletePost(fetchPostData: fetchPostData) {
         console.log(fetchPostData);
         const { post_id } = fetchPostData;
@@ -145,5 +141,60 @@ export const postService = {
         } else {
             return false;
         }
+    },
+
+    async editPost(postData: Post, post_id: number) {
+        // Step 1: Retrieve Existing Post
+        const post = await this.postRepository.findPostbyPk({ post_id });
+        if (!post) {
+            return customErrorMsg('Post not found');
+        }
+
+        // Step 2: Update Post Data
+        const updatedPost = await post.update(postData);
+
+        // Step 3: Update/Delete Images
+        const existingImages =
+            await this.postImageRepository.fetchImagesByPostId({
+                post_id,
+            });
+        const existingImageUrls = existingImages.map((img) => img.img_url);
+        const newImages = postData.img_url || [];
+
+        // Delete images
+        const imagesToDelete = existingImageUrls.filter(
+            (url) => !newImages.includes(url),
+        );
+        await Promise.all(
+            imagesToDelete.map((url) =>
+                this.postImageRepository.deleteImageByUrl(url),
+            ),
+        );
+
+        // Upload and add new images
+        const imagesToAdd = newImages.filter(
+            (url) => !existingImageUrls.includes(url),
+        );
+        const imageUploadPromises = imagesToAdd.map(async (item) => {
+            const { secure_url } = await cloudinary(item);
+            fs.unlinkSync(item);
+            return this.postImageRepository.createPostImage({
+                post_id: post_id,
+                img_url: secure_url!,
+            });
+        });
+        await Promise.all(imageUploadPromises);
+
+        // Step 4: Override Tags
+        // Delete existing tags
+        await this.postTagsRepository.deletePostTags(post_id);
+
+        // Add new tags
+        const newTags = postData.tags || [];
+        newTags.forEach(async (name) => {
+            await this.postTagsRepository.createPostTags({ post_id, name });
+        });
+
+        return updatedPost;
     },
 };

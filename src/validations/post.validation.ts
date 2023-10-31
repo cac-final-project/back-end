@@ -28,3 +28,13 @@ export const fetch_post_validation = Joi.object({
 export const delete_post_validation = Joi.object({
     postId: Joi.number().integer().positive().required(),
 });
+
+export const update_post_validation = Joi.object({
+    postId: Joi.number().integer().positive().required(),
+    type: Joi.string().valid('tip', 'campaign').required(),
+    title: Joi.string().max(255).required(),
+    content: Joi.string().required(),
+    lat: Joi.number().optional(),
+    lon: Joi.number().optional(),
+    addressName: Joi.string().optional(),
+});

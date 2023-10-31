@@ -52,4 +52,26 @@ export const postTagsRepository = {
             return dbException(err);
         }
     },
+
+    async deleteTagByNameAndPostId(tagName: string, post_id: number) {
+        try {
+            const result = await db.PostTags.destroy({
+                where: {
+                    name: tagName,
+                    post_id: post_id,
+                },
+            });
+
+            // if (result === 0) {
+            //     // Optional: handle the case where no record was found to delete
+            //     return customErrorMsg(
+            //         'No tag found with the given name for this post',
+            //     );
+            // }
+
+            return; // Successfully deleted
+        } catch (err) {
+            return dbException(err);
+        }
+    },
 };

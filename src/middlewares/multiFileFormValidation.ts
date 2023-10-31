@@ -46,8 +46,6 @@ const multiFileFormValidation = (schema: Joi.Schema): RequestHandler => {
             delete req_data.tags;
         }
 
-        console.log('middleware', req_data);
-
         const parsedBody: { [key: string]: any } = {};
 
         Object.entries(req_data).forEach(([key, value]) => {

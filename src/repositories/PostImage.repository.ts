@@ -39,4 +39,21 @@ export const postImageRepository = {
             return dbException(err);
         }
     },
+
+    async deleteImageByUrl(img_url: string) {
+        try {
+            const result = await db.PostImage.destroy({
+                where: { img_url: img_url },
+            });
+
+            if (result === 0) {
+                // Optional: handle the case where no record was found to delete
+                return customErrorMsg('No image found with the given URL');
+            }
+
+            return; // Successfully deleted
+        } catch (err) {
+            return dbException(err);
+        }
+    },
 };

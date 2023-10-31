@@ -10,6 +10,7 @@ export {
     voteValidation,
     fetchPostsValidation,
     fetch_post_validation,
+    update_post_validation,
 } from './post.validation';
 
 export {

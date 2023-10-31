@@ -21,6 +21,7 @@ class PostController implements Controller {
             this.fetchPost,
             this.fetchTags,
             this.deletePost,
+            this.editPost,
         );
         createRoutes(customRoutes, this.router);
     }
@@ -125,8 +126,11 @@ class PostController implements Controller {
         async (req: CustomRequest, res) => {
             const response = customResponse(res);
             const user_id = req.user_id;
+            const username = req.username;
+            const post: Post = { ...req.body, author: username };
 
             try {
+                const res = await postService.editPost(post, req.body.postId);
                 response.success({ code: StatusCodes.CREATED });
             } catch (err) {
                 response.error(err as ErrorData);
