@@ -23,9 +23,6 @@ export const postService = {
         const { type, tags, img_url, author } = postData;
         const user = await this.userRepository.findByUsername(author);
         if (type === 'tip') {
-            if (postData.lat || postData.lon) {
-                return customErrorMsg('tip cannot include either lat or lon');
-            }
             const tip = await this.postRepository.createPost(postData);
             if (img_url && img_url.length > 0) {
                 const imageUploadPromises: Promise<PostImage>[] = img_url.map(
