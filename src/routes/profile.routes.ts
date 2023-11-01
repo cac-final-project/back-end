@@ -26,14 +26,11 @@ export function createProfileRoutes(
         getAuthorProfile: {
             method: 'get',
             path: `${path}/author`,
-            middleware: [
-                validateToken(),
-                queryValidation(getAuthorProfile_validation),
-            ],
+            middleware: [queryValidation(getAuthorProfile_validation)],
             handler: getAuthorProfileHandler,
         },
         updateProfile: {
-            method: 'put',
+            method: 'post',
             path: `${path}`,
             middleware: [
                 upload.single('file'),

@@ -35,8 +35,16 @@ export const profileService = {
             { userId: user?.id! },
             username,
         );
+
+        if (!user) {
+            return null;
+        }
+
+        const extractedData = user.get() as { [key: string]: any };
+        console.log(profile);
         return {
             ...profile,
+            user: extractedData,
         };
     },
 

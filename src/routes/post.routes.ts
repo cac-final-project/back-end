@@ -72,8 +72,8 @@ export function createPostRoutes(
             handler: deletePostHandler,
         },
         editPost: {
-            method: 'put',
-            path: `${path}`,
+            method: 'post',
+            path: `${path}/update`,
             middleware: [
                 upload.array('files', 2), // assuming max 10 files
                 multerErrorHandling,
